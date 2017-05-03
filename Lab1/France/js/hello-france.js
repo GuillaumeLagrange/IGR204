@@ -7,6 +7,9 @@ var x;
 var y;
 
 var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+var popText = d3.select("body").append("p");
+
+popText.html("").style("text-align", "center");
 
 d3.tsv("data/france.tsv")
     .row(function (d, i) {
@@ -44,5 +47,23 @@ function draw() {
         .attr("width", 1)
         .attr("height", 1)
         .attr("x", function(d) { return x(d.longitude); })
+        .attr("y", function(d) { return h-y(d.latitude); })
+        .on("mouseover", mouseOver)
+        .on("mouseout", mouseOut);
+}
+
+function mouseOver(d) {
+    d3.select(this).attr("width", 10).attr("height", 10)
+        .attr("x", function(d) { return x(d.longitude) - 5; })
+        .attr("y", function(d) { return h - y(d.latitude) - 5; });
+    var text = d.codePostal + " - Name: " + d.place + " - Population: " + d.population +
+        " - Density: " + d.density;
+    popText.html(text);
+}
+
+function mouseOut(d) {
+    d3.select(this).attr("width", 1).attr("height", 1)
+        .attr("x", function(d) { return x(d.longitude); })
         .attr("y", function(d) { return h-y(d.latitude); });
+    popText.html("");
 }

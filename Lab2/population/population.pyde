@@ -44,9 +44,8 @@ def mouseMoved():
     global popText
     for place in places:
         if int(place.x) == mouseX and int(place.y) == (height - mouseY):
-            popText = place.name
-            draw()
-            print place.name
+            popText = str(place.postalCode) + " " + place.name + " Population: " + str(place.population) + " Density: " + str(place.density)
+            redraw()
             return
 
 class Place(object):
